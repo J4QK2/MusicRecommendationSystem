@@ -2,9 +2,10 @@ import streamlit as st
 import requests
 import pandas as pd
 import joblib as jb
+from sklearn.metrics.pairwise import cosine_similarity
 
 recData = jb.load("recommendationData.pkl")
-simData = jb.load("similarities.pkl")
+simData = jb.load("E:/big models/similarities.pkl")
 
 recDataFrame = pd.DataFrame(recData)
 
@@ -16,8 +17,12 @@ def recommend(name):
         st.write("OOps no song in the dataset")
     
     music_index = music_row.index[0]
-    distances = simData[music_index]
+    music_vector = simData[music_index]
+    music_vector = music_vector.reshape(1, -1)
 
+    similarities = cosine_similarity(music_vector, simData)
+    distances = similarities.flatten()
+    
     music_list = sorted(list(enumerate(distances)), reverse=True, key=lambda x: x[1])[1:6]
 
     recommendList = []
