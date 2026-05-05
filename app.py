@@ -9,6 +9,9 @@ simData = jb.load("E:/big models/similarities.pkl")
 
 recDataFrame = pd.DataFrame(recData)
 
+st.set_page_config(layout="wide")
+st.title("Recommendation System")
+
 def get_poster(name):
     url = f"https://api.deezer.com/search?q={name}"
 
