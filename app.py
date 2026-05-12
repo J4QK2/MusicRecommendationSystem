@@ -4,15 +4,19 @@ import pandas as pd
 import joblib as jb
 from sklearn.metrics.pairwise import cosine_similarity
 
+
+#загружаем данные
 recData = jb.load("recommendationData.pkl")
 simData = jb.load("E:/big models/similarities.pkl")
 
 recDataFrame = pd.DataFrame(recData)
 
+#настройка интерфейса сайта 
 st.set_page_config(layout="wide")
 st.title("Recommendation System")
 
 def get_poster(name):
+    #в этом проекте использую API Deezer 
     url = f"https://api.deezer.com/search?q={name}"
 
     try:
@@ -36,6 +40,7 @@ def recommend(name):
     music_vector = simData[music_index]
     music_vector = music_vector.reshape(1, -1)
 
+    #проверяю сходства с каждым вызовом функции
     similarities = cosine_similarity(music_vector, simData)
     distances = similarities.flatten()
     
